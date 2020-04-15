@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{object.name}}{% endblock %}
+
+{% block pagetitle %}{{object.name}}{% endblock %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+    <li class="breadcrumb-item"><a href="{% url 'task_list' project.id %}">Tasks of {{project.name}}</a></li>
+    <li class="breadcrumb-item active">{{object.name}}</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main content -->
+<section class="content">
+  
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <h4>Start Date</h4>
+            <p>{{object.start_date}}</p>
+            <hr>
+            <h4>End Date</h4>
+            <p>{{object.end_date}}</p>
+            <hr>
+            {% if object.assign %}
+            <h4>Assign</h4>
+            <p>{{object.assign}}</p>
+            <hr>
+            {% endif %}
+            {% if object.description %}
+            <h4>Description</h4>
+            <p>{{object.description}}</p>
+            <hr>
+            {% endif %}
+            <h4>Created On</h4>
+            <p>{{object.createdAt}}</p>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+    {% if object.subtask_set.count > 0%}
+    <div class="row">
+      <div class="col-12 col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Subtasks</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Created On</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for subtask in object.subtask_set.all %}
+                      <tr>
+                          <td>{{subtask.name}}</td>
+                          <td>{{subtask.start_date}}</td>
+                          <td>{{subtask.end_date}}</td>
+                          <td>{{subtask.createdAt}}</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+    {% endif %}
+    
+</section>
+{% endblock  %}

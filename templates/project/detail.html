@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}{{object.name}}{% endblock %}
+
+{% block pagetitle %}{{object.name}}{% endblock %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+    <li class="breadcrumb-item active">{{object.name}}</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main content -->
+<section class="content">
+  
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <h3 class="d-inline-block d-sm-none">{{object.name}}</h3>
+            <div class="col-12">
+              {% if object.avatar %}
+                <img class="product-image" src="{{object.avatar.url}}">
+              {% else %}
+                <img class="product-image" src="{% static 'image/no-image.jpg' %}">
+              {% endif %}
+            </div>
+          </div>  
+          <div class="col-12 col-sm-6">
+            <h4>Duration</h4>
+            <p>{{object.duration}}</p>
+            <hr>
+            {% if object.description %}
+            <h4>Description</h4>
+            <p>{{object.description}}</p>
+            <hr>
+            {% endif %}
+            <h4>Created On</h4>
+            <p>{{object.createdAt}}</p>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+    <div class="card-body">
+      <h4>Tasks</h4>
+      <div class="row">
+        <div class="col-5 col-sm-3">
+          <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+
+            {% for task in object.task_set.all %}
+              <a class="nav-link {% if forloop.counter == 1%}active{% endif%}" id="vert-tabs-{{task.id}}-tab" data-toggle="pill" href="#vert-{{task.id}}-home" role="tab" aria-controls="vert{{task.id}}-home" aria-selected="true">{{task.name}}</a>
+            {% endfor %}
+
+          </div>
+        </div>
+        <div class="col-7 col-sm-9">
+          <div class="tab-content" id="vert-tabs-tabContent">
+            
+            {% for task in object.task_set.all %}
+                <div class="tab-pane text-left fade show {% if forloop.counter == 1%}active{% endif%}" id="vert-{{task.id}}-home" role="tabpanel" aria-labelledby="vert-tabs-{{task.id}}-tab">
+                    
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                          <h4>Start Date</h4>
+                          <p>{{task.start_date}}</p>
+                          <hr>
+                          <h4>End Date</h4>
+                          <p>{{task.end_date}}</p>
+                          <hr>
+                          {% if task.assign %}
+                          <h4>Assign</h4>
+                          <p>{{task.assign}}</p>
+                          <hr>
+                          {% endif %}
+                          {% if task.description %}
+                          <h4>Description</h4>
+                          <p>{{task.description}}</p>
+                          <hr>
+                          {% endif %}
+                          <h4>Created On</h4>
+                          <p>{{task.createdAt}}</p>
+                          <hr>
+                        </div>
+                    </div>
+
+                    {% if task.subtask_set.count > 0%}
+                    <div class="row">
+                      <div class="col-12 col-md-12">
+                        <div class="card">
+                          <div class="card-header">
+                            <h3 class="card-title">Subtasks</h3>
+                          </div>
+                          <!-- /.card-header -->
+                          <div class="card-body p-0">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
+                                  <th>Created On</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                 {% for subtask in task.subtask_set.all %}
+                                      <tr>
+                                          <td>{{subtask.name}}</td>
+                                          <td>{{subtask.start_date}}</td>
+                                          <td>{{subtask.end_date}}</td>
+                                          <td>{{subtask.createdAt}}</td>
+                                      </tr>
+                                  {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                          <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                      </div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+</section>
+{% endblock  %}

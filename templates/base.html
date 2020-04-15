@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}{{ request.path_info | slugify }}{% endblock %}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <!-- Ionicons 
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  -->
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.css' %}">
+
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  <!-- Google Font: Source Sans Pro 
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  -->
+</head>
+
+<body class="">
+    
+<div class="loading" style="display:none">Loading&#8230;</div>
+    <div class="wrapper">
+      
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{% url 'project_list' %}" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i> Projects</a>
+            </li>
+        </ul>
+        <!-- Right navbar links -->  
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown user-menu">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+            <img src="{% static 'image/avatar.png'%}" class="user-image img-circle elevation-2" alt="User Image">
+            <span class="d-none d-md-inline">{{request.user.username}}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <!-- User image -->
+                <li class="user-header bg-primary">
+                <img src="{% static 'image/avatar.png'%}" class="img-circle elevation-2" alt="User Image">
+                <p>
+                    {{request.user.username}}
+                    <small>{{request.user.last_login}}</small>
+                </p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                <a href="{% url 'logout' %}" class="btn btn-default btn-flat float-right">Sign out</a>
+                </li>
+            </ul>
+            </li>
+        </ul>
+        </nav>
+      <!-- /.navbar -->
+      
+      <!-- Content Wrapper. Contains page content -->
+      <div class="">
+
+          <!-- breadcrumb (Page header) -->
+          <div class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">{% block pagetitle %}{% endblock %}</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                      {% block breadcrumbs %}
+                        <li class="breadcrumb-item"><a href="{% url 'project_list' %}">Projects</a></li>
+                      {% endblock %}
+                  </ol>
+                </div><!-- /.col -->
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </div>
+          <!-- /.breadcrumb -->
+          
+          <!-- Main content -->
+          {% block content %}
+              Body content
+          {% endblock %}
+          <!-- /.content -->
+
+      </div>
+</div>    
+ 
+<!-- jQuery -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'js/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'js/datatables/dataTables.bootstrap4.js' %}"></script>
+<!-- Date Picker -->
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<!-- theme App -->
+<script src="{% static 'js/theme.js' %}"></script>
+
+{% if request.resolver_match.view_name == 'project_list' %}
+<script>
+    $(function () {
+      $('#project_list').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endif %}
+
+{% if request.resolver_match.view_name == 'task_list' %}
+<script>
+    $(function () {
+      $('#task_list').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endif %}
+
+{% if request.resolver_match.view_name == 'subtask_list' %}
+<script>
+    $(function () {
+      $('#subtask_list').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endif %}
+
+<script>
+//start date
+$('#id_start_date').datepicker({format: 'yyyy-mm-dd',autoclose:true});
+//end date
+$('#id_end_date').datepicker({format: 'yyyy-mm-dd',autoclose:true});
+</script>
+</body>
+</html>

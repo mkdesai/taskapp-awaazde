@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{object.name}}{% endblock %}
+
+{% block pagetitle %}{{object.name}}{% endblock %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+    <li class="breadcrumb-item"><a href="{% url 'task_list' project.id %}">Tasks of {{project.name}}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'subtask_list' project.id task.id %}">Subtasks of {{task.name}}</a></li>
+    <li class="breadcrumb-item active">{{object.name}}</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main content -->
+<section class="content">
+  
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <h4>Start Date</h4>
+            <p>{{object.start_date}}</p>
+            <hr>
+            <h4>End Date</h4>
+            <p>{{object.end_date}}</p>
+            <hr>
+            {% if object.description %}
+            <h4>Description</h4>
+            <p>{{object.description}}</p>
+            <hr>
+            {% endif %}
+            <h4>Created On</h4>
+            <p>{{object.createdAt}}</p>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</section>
+{% endblock  %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Subtasks of {{task.name}}{% endblock %}
+
+{% block pagetitle %}Subtasks of {{task.name}}{% endblock %}
+
+{% block breadcrumbs %}
+	{{ block.super }}
+    <li class="breadcrumb-item"><a href="{% url 'task_list' project.id %}">Tasks of {{project.name}}</a></li>
+    <li class="breadcrumb-item active">Subtasks of {{task.name}}</li>
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+
+	<!-- Main content -->
+    <section class="content">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">{{ message|safe }}</div><br/>
+            {% else%}
+            <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div><br/>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">List of Subtask</h3>
+              <div class="card-tools">
+                <a href="{% url 'subtask_add' project.id task.id %}" class="btn btn-block btn-primary"><i class="fas fa-plus"></i> &nbsp Add New Subtask</a>
+              </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="subtask_list" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Created On</th>
+                  <th class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for object in object_list%}
+                        <tr>
+                            <td>{{object.name}}</td>
+                            <td>{{object.start_date}}</td>
+                            <td>{{object.end_date}}</td>
+                            <td>{{object.createdAt}}</td>
+                           <td class="text-center">
+                                <a href="{% url 'subtask_view' project.id task.id object.id %}" class="btn btn-sm btn-secondary" title="View"><i class="fas fa-eye"></i> View</a>
+                                <a href="{% url 'subtask_edit' project.id task.id object.id %}" class="btn btn-sm btn-info" title="Edit"><i class="fas fa-pencil-alt"></i> Edit</a>
+                                <a href="{% url 'subtask_delete' project.id task.id object.id %}" class="btn btn-sm btn-danger" title="Delete"><i class="fas fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+	  
+
+{% endblock  %}
